@@ -4,6 +4,15 @@ public class KeyboardNoteTest : MonoBehaviour
 {
     [SerializeField] private KeyboardAudioDetector keyboard;
 
+    [Header("Objetos de las notas")]
+    [SerializeField] private KeyboardNoteObject c4Object;
+    [SerializeField] private KeyboardNoteObject d4Object;
+    [SerializeField] private KeyboardNoteObject e4Object;
+    [SerializeField] private KeyboardNoteObject f4Object;
+    [SerializeField] private KeyboardNoteObject g4Object;
+    [SerializeField] private KeyboardNoteObject a4Object;
+    [SerializeField] private KeyboardNoteObject b4Object;
+
     private void OnEnable()
     {
         if (keyboard == null)
@@ -24,42 +33,40 @@ public class KeyboardNoteTest : MonoBehaviour
 
     private void OnNotePressed(string note)
     {
-        Debug.Log(">>> JUGADOR TOCÓ: " + note);
-
-        switch (note)
-        {
-            case "C4":
-                Debug.Log("DO");
-                break;
-
-            case "D4":
-                Debug.Log("RE");
-                break;
-
-            case "E4":
-                Debug.Log("MI");
-                break;
-
-            case "F4":
-                Debug.Log("FA");
-                break;
-
-            case "G4":
-                Debug.Log("SOL");
-                break;
-
-            case "A4":
-                Debug.Log("LA");
-                break;
-
-            case "B4":
-                Debug.Log("SI");
-                break;
-        }
+        GetNoteObject(note)?.Press();
     }
 
     private void OnNoteReleased(string note)
     {
-        Debug.Log(">>> JUGADOR SOLTÓ: " + note);
+        GetNoteObject(note)?.Release();
+    }
+
+    private KeyboardNoteObject GetNoteObject(string note)
+    {
+        switch (note)
+        {
+            case "C4":
+                return c4Object;
+
+            case "D4":
+                return d4Object;
+
+            case "E4":
+                return e4Object;
+
+            case "F4":
+                return f4Object;
+
+            case "G4":
+                return g4Object;
+
+            case "A4":
+                return a4Object;
+
+            case "B4":
+                return b4Object;
+        }
+
+        return null;
     }
 }

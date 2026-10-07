@@ -4,13 +4,13 @@ using UnityEngine;
 public class KeyboardAudioDetector : MonoBehaviour
 {
     [Header("Audio")]
-    [SerializeField] private int sampleSize = 4096;
+    [SerializeField] private int sampleSize = 1024;
     [SerializeField] private float minimumVolume = 0.015f;
 
     [Header("Detection")]
     [SerializeField] private float noteTolerance = 0.05f;
     [SerializeField] private float noteStabilityTime = 0.08f;
-    [SerializeField] private float releaseTime = 0.15f;
+    [SerializeField] private float releaseTime = 0.03f;
 
     public event Action<string> OnNotePressed;
     public event Action<string> OnNoteReleased;
@@ -114,7 +114,6 @@ public class KeyboardAudioDetector : MonoBehaviour
 
     private void HandleNote(string detectedNote, float frequency)
     {
-        // Si estamos tocando la misma nota, no hacemos nada.
         if (detectedNote == currentNote)
         {
             candidateNote = "";
@@ -122,7 +121,6 @@ public class KeyboardAudioDetector : MonoBehaviour
             return;
         }
 
-        // Si encontramos una nueva nota
         if (detectedNote != candidateNote)
         {
             candidateNote = detectedNote;
@@ -130,8 +128,6 @@ public class KeyboardAudioDetector : MonoBehaviour
         }
 
         candidateTimer += Time.deltaTime;
-
-        // Esperamos un pequeño tiempo para confirmar la nota
         if (candidateTimer >= noteStabilityTime)
         {
             ChangeNote(detectedNote, frequency);
@@ -140,7 +136,6 @@ public class KeyboardAudioDetector : MonoBehaviour
 
     private void ChangeNote(string newNote, float frequency)
     {
-        // Si había una nota anterior, la soltamos.
         if (!string.IsNullOrEmpty(currentNote))
         {
             OnNoteReleased?.Invoke(currentNote);
