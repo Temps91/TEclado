@@ -62,7 +62,7 @@ public class SongNoteReceiber : MonoBehaviour
         if (audioSource == null)
         {
             Debug.LogError(
-                "No hay AudioSource asignado."
+                "No hay AudioSource asignado"
             );
 
             return;
@@ -71,7 +71,7 @@ public class SongNoteReceiber : MonoBehaviour
         if (analyzer == null)
         {
             Debug.LogError(
-                "No hay SongAudioAnalizer asignado."
+                "No hay SongAudioAnalizer asignado"
             );
 
             return;
@@ -80,7 +80,7 @@ public class SongNoteReceiber : MonoBehaviour
         if (noteSpawnPoint == null)
         {
             Debug.LogError(
-                "No hay Note Spawn Point asignado."
+                "No hay Note Spawn Point asignado"
             );
 
             return;
@@ -89,7 +89,7 @@ public class SongNoteReceiber : MonoBehaviour
         if (noteHitPoint == null)
         {
             Debug.LogError(
-                "No hay Note Hit Point asignado."
+                "No hay Note Hit Point asignado"
             );
 
             return;
@@ -195,7 +195,7 @@ public class SongNoteReceiber : MonoBehaviour
         if (noteSpawnPoint == null)
         {
             Debug.LogError(
-                "No hay Note Spawn Point asignado."
+                "No hay Note Spawn Point asignado"
             );
 
             return;
@@ -204,7 +204,7 @@ public class SongNoteReceiber : MonoBehaviour
         if (noteHitPoint == null)
         {
             Debug.LogError(
-                "No hay Note Hit Point asignado."
+                "No hay Note Hit Point asignado"
             );
 
             return;
