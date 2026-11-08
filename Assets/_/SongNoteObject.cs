@@ -2,105 +2,49 @@ using UnityEngine;
 
 public class SongNoteObject : MonoBehaviour
 {
-    private string note;
+    public string NoteName { get; private set; }
 
+    private Vector3 startPosition;
     private Vector3 targetPosition;
-
     private float targetSongTime;
-
     private double songStartDspTime;
-
+    private float noteTravelTime;
     private bool initialized;
+    private bool isHit;
+    private SongGameplayManager manager;
 
-    public void Initialize(
-        string noteName,
-        Vector3 target,
-        float targetTime,
-        double startDspTime
-    )
+    public void Initialize(string noteName, Vector3 target, float targetTime, double startDspTime, float travelTime)
     {
-        note = noteName;
-
+        NoteName = noteName;
+        startPosition = transform.position;
         targetPosition = target;
-
         targetSongTime = targetTime;
-
         songStartDspTime = startDspTime;
-
+        noteTravelTime = travelTime;
         initialized = true;
+        manager = FindFirstObjectByType<SongGameplayManager>();
     }
 
     private void Update()
     {
-        if (!initialized)
+        if (!initialized || isHit) return;
+
+        double currentSongTime = AudioSettings.dspTime - songStartDspTime;
+        double spawnTime = targetSongTime - noteTravelTime;
+        float progress = (float)((currentSongTime - spawnTime) / noteTravelTime);
+
+        transform.position = Vector3.LerpUnclamped(startPosition, targetPosition, progress);
+
+        if (progress > 1.5f)
         {
-            return;
+            if (manager != null) manager.RegisterMiss();
+            Destroy(gameObject);
         }
-
-        double currentSongTime =
-            AudioSettings.dspTime -
-            songStartDspTime;
-
-        double remainingTime =
-            targetSongTime -
-            currentSongTime;
-
-        if (remainingTime <= 0.0)
-        {
-            transform.position =
-                targetPosition;
-
-            return;
-        }
-
-        float distance =
-            Vector3.Distance(
-                transform.position,
-                targetPosition
-            );
-
-        if (distance <= 0.001f)
-        {
-            transform.position =
-                targetPosition;
-
-            return;
-        }
-
-        float speed =
-            distance /
-            (float)remainingTime;
-
-        transform.position =
-            Vector3.MoveTowards(
-                transform.position,
-                targetPosition,
-                speed * Time.deltaTime
-            );
     }
 
-    private void OnTriggerEnter(Collider other)
+    public void Hit()
     {
-        if (!other.CompareTag("NoteHit"))
-        {
-            return;
-        }
-
-        Debug.Log(
-            "NOTA LLEGÓ AL COLLIDER: " +
-            note
-        );
-
-        SongGameplayManager gameplayManager =
-            FindFirstObjectByType<SongGameplayManager>();
-
-        if (gameplayManager != null)
-        {
-            gameplayManager.SetExpectedNote(
-                note
-            );
-        }
-
+        isHit = true;
         Destroy(gameObject);
     }
 }

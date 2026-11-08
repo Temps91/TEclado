@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class SongAudioAnalizer : MonoBehaviour
+public class SoungAnalizer : MonoBehaviour
 {
     public event Action<string, float> OnNoteDetected;
 

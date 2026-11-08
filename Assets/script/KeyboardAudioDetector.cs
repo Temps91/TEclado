@@ -52,13 +52,7 @@ public class KeyboardAudioDetector : MonoBehaviour
     {
         if (Microphone.devices.Length == 0)
         {
-
             return;
-        }
-
-        foreach (string device in Microphone.devices)
-        {
-
         }
 
         microphoneDevice = Microphone.devices[0];
@@ -71,11 +65,12 @@ public class KeyboardAudioDetector : MonoBehaviour
         );
 
         samples = new float[sampleSize];
-
     }
 
     private void Update()
     {
+        CheckPCKeyboardInput();
+
         if (microphoneClip == null)
             return;
 
@@ -112,6 +107,30 @@ public class KeyboardAudioDetector : MonoBehaviour
         HandleNote(detectedNote, frequency);
     }
 
+    private void CheckPCKeyboardInput()
+    {
+        if (Input.GetKeyDown(KeyCode.A)) OnNotePressed?.Invoke("C4");
+        if (Input.GetKeyUp(KeyCode.A)) OnNoteReleased?.Invoke("C4");
+
+        if (Input.GetKeyDown(KeyCode.S)) OnNotePressed?.Invoke("D4");
+        if (Input.GetKeyUp(KeyCode.S)) OnNoteReleased?.Invoke("D4");
+
+        if (Input.GetKeyDown(KeyCode.D)) OnNotePressed?.Invoke("E4");
+        if (Input.GetKeyUp(KeyCode.D)) OnNoteReleased?.Invoke("E4");
+
+        if (Input.GetKeyDown(KeyCode.F)) OnNotePressed?.Invoke("F4");
+        if (Input.GetKeyUp(KeyCode.F)) OnNoteReleased?.Invoke("F4");
+
+        if (Input.GetKeyDown(KeyCode.G)) OnNotePressed?.Invoke("G4");
+        if (Input.GetKeyUp(KeyCode.G)) OnNoteReleased?.Invoke("G4");
+
+        if (Input.GetKeyDown(KeyCode.H)) OnNotePressed?.Invoke("A4");
+        if (Input.GetKeyUp(KeyCode.H)) OnNoteReleased?.Invoke("A4");
+
+        if (Input.GetKeyDown(KeyCode.J)) OnNotePressed?.Invoke("B4");
+        if (Input.GetKeyUp(KeyCode.J)) OnNoteReleased?.Invoke("B4");
+    }
+
     private void HandleNote(string detectedNote, float frequency)
     {
         if (detectedNote == currentNote)
@@ -139,14 +158,11 @@ public class KeyboardAudioDetector : MonoBehaviour
         if (!string.IsNullOrEmpty(currentNote))
         {
             OnNoteReleased?.Invoke(currentNote);
-
-
         }
 
         currentNote = newNote;
 
         OnNotePressed?.Invoke(currentNote);
-
 
         candidateNote = "";
         candidateTimer = 0f;
@@ -165,8 +181,6 @@ public class KeyboardAudioDetector : MonoBehaviour
         if (silenceTimer >= releaseTime)
         {
             OnNoteReleased?.Invoke(currentNote);
-
-
 
             currentNote = "";
             silenceTimer = 0f;
